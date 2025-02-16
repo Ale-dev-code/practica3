@@ -1,0 +1,138 @@
+
+from sqlite3 import Connection
+class Ventas:
+    """ Tabla VENTAS con múltiples relaciones """
+    
+    def create_table(self, con: Connection):
+        query = """
+        CREATE TABLE IF NOT EXISTS VENTAS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id VARCHAR(20) NOT NULL,
+            postal_code VARCHAR(20),
+            product_id INTEGER NOT NULL,
+            sales_amount REAL NOT NULL,
+            quantity INTEGER NOT NULL,
+            discount REAL NOT NULL,
+            profit REAL NOT NULL,
+            shipping_cost REAL NOT NULL,
+            order_priority VARCHAR(20) NOT NULL,
+            market_id INTEGER NOT NULL,
+            segmento_id INTEGER NOT NULL,
+            region_id INTEGER NOT NULL,
+            FOREIGN KEY (market_id) REFERENCES Market(id),
+            FOREIGN KEY (segmento_id) REFERENCES Segmento(id),
+            FOREIGN KEY (region_id) REFERENCES Region(id)
+        );
+        """
+        cursor = con.cursor()
+        cursor.execute(query)
+        con.commit()
+        
+class Pais:
+    """ Tabla id name """
+    
+    def create_table(self, conn: Connection):
+        query = """
+        CREATE TABLE IF NOT EXISTS PAIS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(50) NOT NULL
+        );
+        """
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+
+
+class PostalCode:
+    """ Tabla POSTALCODE """
+    
+    def create_table(self, con: Connection):
+        query = """
+        CREATE TABLE IF NOT EXISTS POSTALCODE (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code VARCHAR(50) NOT NULL,
+            pais VARCHAR(50) NOT NULL,
+            state VARCHAR(50) NOT NULL
+        );
+        """
+        cursor = con.cursor()
+        cursor.execute(query)
+        con.commit()
+
+
+class Categorias:
+    """ Tabla CATEGORIAS """
+    
+    def create_table(self, con: Connection):
+        query = """
+        CREATE TABLE IF NOT EXISTS CATEGORIAS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(50) NOT NULL,
+            subcategory VARCHAR(50) NOT NULL
+        );
+        """
+        cursor = con.cursor()
+        cursor.execute(query)
+        con.commit()
+
+
+class Productos:
+    """ Tabla PRODUCTOS: id, name, product_id, subcategory_id """
+    
+    def create_table(self, con: Connection):
+        query = """
+        CREATE TABLE IF NOT EXISTS PRODUCTOS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(50) NOT NULL,
+            product_id INTEGER NOT NULL,
+            category_id INTEGER NOT NULL
+        );
+        """
+        cursor = con.cursor()
+        cursor.execute(query)
+        con.commit()
+
+
+class Segmento:
+    """ Tabla de segmentos """
+    
+    def create_table(self, conn):
+        query = """
+        CREATE TABLE IF NOT EXISTS Segmento (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            segment_name TEXT NOT NULL
+        );
+        """
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+
+
+class Region:
+    """ Tabla de regiones """
+    
+    def create_table(self, conn):
+        query = """
+        CREATE TABLE IF NOT EXISTS Region (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            region_name TEXT NOT NULL
+        );
+        """
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+
+
+class Market:
+    """ Tabla de mercados """
+    
+    def create_table(self, conn):
+        query = """
+        CREATE TABLE IF NOT EXISTS Market (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            market_name TEXT NOT NULL
+        );
+        """
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
